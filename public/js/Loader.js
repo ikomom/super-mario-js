@@ -9,10 +9,13 @@ export function loadImage(url) {
     })
 }
 
-export function loadLevel(name){
-    return fetch(`../levels/level${name}.json`)
-    .then(r => r.json())
-    // .then(json => new Promise(resolve => setTimeout(resolve, 3000, json)))//模拟延时
-    .catch(error => console.error(error));
+export async function loadLevel(name){
+    try {
+        const r = await fetch(`../levels/level${name}.json`);
+        return await r.json();
+    }
+    catch (error) {
+        return console.error(error);
+    }
     
 }

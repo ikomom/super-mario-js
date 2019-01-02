@@ -1,43 +1,42 @@
 import {
     loadLevel
-} from "./Loader.js"
+} from "./Loader.js";
 import {
-    loadMarioSprites,
     loadBackgroundSprites
-} from "./Sprite.js"
-import { creactBackgroundLayer, creatSpriteLayer } from './layers.js'
-import Compositor from "./Compositor.js"
-
+} from "./Sprite.js";
+import {
+    creactBackgroundLayer,
+    creatSpriteLayer
+} from './layers.js';
+import Compositor from "./Compositor.js";
+import {
+    createMario
+} from './Entities.js';
+import Timer from './Timer.js'
 
 const canvas = document.getElementById('screen');
 const context = canvas.getContext('2d');
 
 Promise.all([
-    loadMarioSprites(),
+    createMario(),
     loadBackgroundSprites(),
     loadLevel('1-1'),
-]).then(([marioSprites, levlSprites, level]) => {
+]).then(([mario, levlSprites, level]) => {
     console.log('level load', level)
-    const comp = new Compositor();
+    /***** 图层 *****/
+    const comp = new Compositor(); 
+    /***** 图层0：背景 *****/
     const backgroundLayer = creactBackgroundLayer(level.backgrounds, levlSprites);
-
     comp.layers.push(backgroundLayer);
-
-    const pos = {
-        x: 64,
-        y: 64,
-    };
-    const spriteLayer = creatSpriteLayer(marioSprites, pos);
+    /***** 图层1：mario *****/
+    const spriteLayer = creatSpriteLayer(mario);
     comp.layers.push(spriteLayer);
-
-    function update() {
-        pos.x += 2;
-        pos.y += 2;
-      
+     /***** 时间更新类 *****/
+    const timer = new Timer(1 / 60);
+    timer.update = function update(deltaTime) {
         comp.draw(context);
-        requestAnimationFrame(update);
+        mario.update(deltaTime);
     }
-
-    update();
+    timer.start();
 
 });

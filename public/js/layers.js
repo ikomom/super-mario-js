@@ -1,4 +1,5 @@
 import SpriteSheet from "./SpriteSheet.js";
+import Entity from "./Entity.js";
 
 function drawBackground(background, context, sprites) {
     background.ranges.forEach(([x1, x2, y1, y2]) => {
@@ -31,11 +32,10 @@ export function creactBackgroundLayer(backgrounds, sprites) {
 
 /**
  * 绘制精灵
- * @param {SpriteSheet} sprites 
- * @param {object} pos 
+ * @param {Entity} entity 精灵实体
  */
-export function creatSpriteLayer(sprites, pos) {
+export function creatSpriteLayer(entity) {
     return function drawSpriteLayer(context) {
-        sprites.draw('idle', context, pos.x, pos.y)
+        entity.draw(context);
     };
 }
