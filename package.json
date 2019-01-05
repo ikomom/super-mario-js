@@ -1,7 +1,7 @@
 {
   "name": "super-mario",
   "version": "1.0.0",
-  "description": "",
+  "description": "mario made by js",
   "main": "index.js",
   "scripts": {
     "start": "serve ./public",
